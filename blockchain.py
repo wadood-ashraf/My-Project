@@ -54,6 +54,16 @@ class Blockchain:
                 return False
         return True
 
+    # Printing the details of the blockchain
+    def print_chain(self):
+        for index, block in enumerate(self.chain):
+            print(f"Block {index}:")
+            print(f"  Data: {block.data}")
+            print(f"  Hash: {block.hash}")
+            print(f"  Previous Hash: {block.prev_hash}")
+            print(f"  Nonce: {block.nonce}")
+            print("-" * 50)
+
 # Create a blockchain with difficulty level 4 (require 4 leading zeros in the hash)
 bc = Blockchain(difficulty=4)
 
@@ -65,15 +75,21 @@ bc.add_block("Block 2 data")
 print("Mining block 3...")
 bc.add_block("Block 3 data")
 
-# Display the blockchain's blocks
-print("\nBlockchain:")
-for block in bc.chain:
-    print(f"Data: {block.data}, Hash: {block.hash}, Previous Hash: {block.prev_hash}, Nonce: {block.nonce}")
+# Print the blockchain
+print("\nBlockchain Details:")
+bc.print_chain()
 
 # Validate the blockchain
 print("\nIs blockchain valid?", bc.validate_chain())  # Should return True
 
 # Tampering with the blockchain (to simulate an attack)
-bc.chain[1].data = "Tampered data"
+print("\nTampering with the blockchain...")
+bc.chain[1].data = "Tampered data"  # Modify the data of the second block
+
+# Print the blockchain again after tampering
+print("\nBlockchain Details After Tampering:")
+bc.print_chain()
+
+# Validate the blockchain after tampering
 print("\nIs blockchain valid after tampering?", bc.validate_chain())  # Should return False
 

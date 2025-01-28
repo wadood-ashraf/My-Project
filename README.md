@@ -1,1 +1,1 @@
-# Basic Blockchain Simulation
+# Basic Blockchain Simulation with proof-of-work

@@ -1,4 +1,4 @@
-import hashlib  # Importing hashlib library to create hashes.
+import hashlib  # Importing hashlib to create hashes.
 
 # Function to create a hash from given data
 def hashGenerator(data):
@@ -30,6 +30,24 @@ class Blockchain:
         block = Block(data, hash, prev_hash)  # Create a new block
         self.chain.append(block)  # Add the new block to the chain
 
+    # Method to validate the blockchain
+    def validate_chain(self):
+        for i in range(1, len(self.chain)):
+            current_block = self.chain[i]
+            previous_block = self.chain[i - 1]
+
+            # Check if the current block's prev_hash matches the previous block's hash
+            if current_block.prev_hash != previous_block.hash:
+                return False
+
+            # Recalculate the hash of the current block and check if it matches
+            recalculated_hash = hashGenerator(current_block.data + current_block.prev_hash)
+            if current_block.hash != recalculated_hash:
+                return False
+
+        return True
+
+
 # Creating a blockchain object
 bc = Blockchain()
 
@@ -39,5 +57,15 @@ bc.add_block('2')  # Adding block with data '2'
 bc.add_block('3')  # Adding block with data '3'
 
 # Printing the blocks in the blockchain
+print("Blockchain:")
 for block in bc.chain:
     print(block.__dict__)  # Display the block details as a dictionary
+
+# Validating the blockchain
+print("\nIs blockchain valid?", bc.validate_chain())  # Should return True
+
+# Tamper with the data of a block
+bc.chain[1].data = "tampered_data"
+
+# Validate the blockchain again after tampering
+print("\nIs blockchain valid after tampering?", bc.validate_chain())  # Should return False
